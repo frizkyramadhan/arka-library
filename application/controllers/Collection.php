@@ -27,20 +27,6 @@ class Collection extends CI_Controller
         $this->load->view('layout/footer', $data);
     }
 
-    function list($slug)
-    {
-        $data['title'] = "Collection Data - ARKA IT Library";
-        $data['subtitle'] = "Collection Data";
-        $data['collection'] = $this->collection_m->selectAll();
-        $data['category_list'] = $this->category_m->category_list();
-
-        $this->load->view('layout/header', $data);
-        $this->load->view('layout/navbar');
-        $this->load->view('layout/sidebar', $data);
-        $this->load->view('collection/list', $data);
-        $this->load->view('layout/footer', $data);
-    }
-
     public function add()
     {
         $data['title'] = "Collection Data - ARKA IT Library";
@@ -76,12 +62,30 @@ class Collection extends CI_Controller
                 ->join('categories', 'collections.category_id = categories.id')
                 ->get_where('collections', ['collections.id' => $collection_id])
                 ->row_array();
-            foreach ($_POST['rows'] as $key => $count) {
-                $upload_file = $_FILES['collection_file_' . $count]['name'];
-                if ($upload_file) {
+
+            $data = array();
+
+            // Count total files
+            $countfiles = count($_FILES['collection_files']['name']);
+
+            // Looping all files
+            for ($i = 0; $i < $countfiles; $i++) {
+
+                if (!empty($_FILES['collection_files']['name'][$i])) {
+
+                    // Define new $_FILES array - $_FILES['file']
+                    $_FILES['file']['name'] = $_FILES['collection_files']['name'][$i];
+                    $_FILES['file']['type'] = $_FILES['collection_files']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['collection_files']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['collection_files']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['collection_files']['size'][$i];
+
+                    // Set preference
                     $config['upload_path'] = './uploads/' . $doc['slug'];
                     $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png';
-                    $config['max_size']     = '0';
+                    $config['max_size'] = '0'; // max_size in kb
+
+                    //Load upload library
                     $this->load->library('upload', $config);
 
                     if (!is_dir('uploads')) {
@@ -94,15 +98,13 @@ class Collection extends CI_Controller
                     } else {
                     }
 
-                    if (!$this->upload->do_upload('collection_file_' . $count)) {
-                        if (!$dir_exist)
-                            rmdir('./uploads/' . $doc['slug']);
-
-                        return array('error' => $this->upload->display_errors('<span>', '</span>'));
-                    } else {
+                    // File upload
+                    if ($this->upload->do_upload('file')) {
+                        // Get data about the file
                         $uploadData = $this->upload->data();
                         $doc_file = $uploadData['file_name'];
-                        $upload_date = $_POST['upload_date_' . $count];
+                        $upload_date = $_POST['upload_date'];
+                        $data['filenames'][] = $doc_file;
 
                         $query = "INSERT INTO attachments (collection_id, collection_file, upload_date) VALUES ('$collection_id','$doc_file','$upload_date')";
                         $this->db->query($query);
@@ -156,12 +158,30 @@ class Collection extends CI_Controller
                 ->join('categories', 'collections.category_id = categories.id')
                 ->get_where('collections', ['collections.id' => $collection_id])
                 ->row_array();
-            foreach ($_POST['rows'] as $key => $count) {
-                $upload_file = $_FILES['collection_file_' . $count]['name'];
-                if ($upload_file) {
+
+            $data = array();
+
+            // Count total files
+            $countfiles = count($_FILES['collection_files']['name']);
+
+            // Looping all files
+            for ($i = 0; $i < $countfiles; $i++) {
+
+                if (!empty($_FILES['collection_files']['name'][$i])) {
+
+                    // Define new $_FILES array - $_FILES['file']
+                    $_FILES['file']['name'] = $_FILES['collection_files']['name'][$i];
+                    $_FILES['file']['type'] = $_FILES['collection_files']['type'][$i];
+                    $_FILES['file']['tmp_name'] = $_FILES['collection_files']['tmp_name'][$i];
+                    $_FILES['file']['error'] = $_FILES['collection_files']['error'][$i];
+                    $_FILES['file']['size'] = $_FILES['collection_files']['size'][$i];
+
+                    // Set preference
                     $config['upload_path'] = './uploads/' . $doc['slug'];
                     $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png';
-                    $config['max_size']     = '0';
+                    $config['max_size'] = '0'; // max_size in kb
+
+                    //Load upload library
                     $this->load->library('upload', $config);
 
                     if (!is_dir('uploads')) {
@@ -174,21 +194,20 @@ class Collection extends CI_Controller
                     } else {
                     }
 
-                    if (!$this->upload->do_upload('collection_file_' . $count)) {
-                        if (!$dir_exist)
-                            rmdir('./uploads/' . $doc['slug']);
-
-                        return array('error' => $this->upload->display_errors('<span>', '</span>'));
-                    } else {
+                    // File upload
+                    if ($this->upload->do_upload('file')) {
+                        // Get data about the file
                         $uploadData = $this->upload->data();
                         $doc_file = $uploadData['file_name'];
-                        $upload_date = $_POST['upload_date_' . $count];
+                        $upload_date = $_POST['upload_date'];
+                        $data['filenames'][] = $doc_file;
 
                         $query = "INSERT INTO attachments (collection_id, collection_file, upload_date) VALUES ('$collection_id','$doc_file','$upload_date')";
                         $this->db->query($query);
                     }
                 }
             }
+
             $this->session->set_flashdata('message', '
                         <div class="alert alert-success" role="alert">
                               Collection edited successfully!

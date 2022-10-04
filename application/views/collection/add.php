@@ -73,39 +73,11 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <table width=100% id="documents" cellpadding="5px">
-                                <tbody>
-                                    <tr>
-                                        <td width=5%>
-                                            <div class="col-sm-12" style="text-align: left;">
-                                                <button type="button" id="addRow" class="btn btn-primary"><i class="fas fa-plus"></i></button>
-                                            </div>
-                                        </td>
-                                        <td width=95%>
-                                            <label for="name" class="col-sm-12 col-form-label">Upload File <small class="text-danger pl-3">.pdf file only</small></label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td width=5%>
-                                            <div class="col-sm-12" style="text-align: left;">
-                                                <button type="button" class="del btn btn-danger"><i class="fas fa-minus"></i></button>
-                                            </div>
-                                        </td>
-                                        <td width=95%>
-                                            <div class="col-sm-10">
-                                                <div class="custom-file">
-                                                    <div class="input-group">
-                                                        <input type="file" name="collection_file_0" multiple required>
-                                                    </div>
-                                                    <input type="hidden" class="form-control" name="upload_date_0" value="<?php echo date("Y-m-d"); ?>">
-                                                    <input type="hidden" id="rows_0" name="rows[]" value="0">
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr id="last"></tr>
-                                </tbody>
-                            </table>
+                            <div class="form-group">
+                                <label>Upload File <small class="text-danger pl-3">.pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png</small></label>
+                                <input type="file" name="collection_files[]" multiple required>
+                                <input type="hidden" class="form-control" name="upload_date" value="<?php echo date("Y-m-d"); ?>">
+                            </div>
                             <input type="submit" value="Save" class="btn btn-success float-right" />
                         </div>
                     </div>
@@ -151,8 +123,8 @@
 </div>
 <!-- /.modal -->
 
-<script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
-<script type="text/javascript">
+<!-- <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script> -->
+<!-- <script type="text/javascript">
     var count = 0;
     $(function() {
         $("#addRow").click(function() {
@@ -181,4 +153,4 @@
     $("table").on('click', '.del', function() {
         $(this).closest('tr').remove()
     });
-</script>
+</script> -->

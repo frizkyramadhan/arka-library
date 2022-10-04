@@ -52,14 +52,15 @@
                                                 <input name="collection_name" class="form-control" type="text" value="<?= @$post['collection_name'] ?>" />
                                             </div>
                                         </div>
-                                        <div class="col-lg-3">
+                                        <!-- <div class="col-lg-3">
                                             <div class="form-group">
                                                 <label>Collection File</label>
                                                 <input name="collection_file" class="form-control" type="text" value="<?= @$post['collection_file'] ?>" />
                                             </div>
-                                        </div>
-                                        <div class="col-lg-12">
-                                            <div class="form-group" align="right">
+                                        </div> -->
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>&nbsp;</label><br>
                                                 <button type="submit" name="filter" class="btn btn-primary">
                                                     <i class="fa fa-search"></i> Filter
                                                 </button>
