@@ -81,26 +81,16 @@
                     <div class="card-body">
                         <?= $this->session->flashdata('file'); ?>
                         <div class="form-group">
-                            <table width=100% id="documents" cellpadding="5px">
+                            <table width=100% id="documents" class="table table-borderless">
                                 <tbody>
-                                    <tr>
-                                        <td width=5%>
-                                            <div class="col-sm-12" style="text-align: left;">
-                                                <button type="button" id="addRow" class="btn btn-primary"><i class="fas fa-plus"></i></button>
-                                            </div>
-                                        </td>
-                                        <td width=95%>
-                                            <label class="col-sm-12 col-form-label">Upload File <small class="text-danger pl-3">.pdf file only</small></label>
-                                        </td>
-                                    </tr>
                                     <?php foreach ($attachments as $att) : ?>
                                         <tr>
-                                            <td width=5%>
+                                            <td width=5% class="align-middle">
                                                 <div class="col-sm-12" style="text-align: left;">
                                                     <a href="<?= base_url('collection/deleteFile/' . $att->collection_id . '/' . $att->id) ?>" class="del btn btn-danger" onclick="return confirm('Are you sure to delete this file?')"><i class="fas fa-minus"></i></a>
                                                 </div>
                                             </td>
-                                            <td width=95%>
+                                            <td width=95% class="align-middle">
                                                 <div class="col-sm-10">
                                                     <div class="custom-file">
                                                         <div class="text-secondary">
@@ -111,37 +101,26 @@
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
-                                    <!-- <tr>
-                                        <td width=5%>
-                                            <div class="col-sm-12" style="text-align: left;">
-                                                <button type="button" class="del btn btn-danger"><i class="fas fa-minus"></i></button>
-                                            </div>
-                                        </td>
-                                        <td width=95%>
-                                            <div class="col-sm-10">
-                                                <div class="custom-file">
-                                                    <div class="input-group">
-                                                        <input type="file" name="collection_file_0" required>
-                                                    </div>
-                                                    <input type="hidden" class="form-control" name="upload_date_0" value="<?php echo date("Y-m-d"); ?>">
-                                                    <input type="hidden" id="rows_0" name="rows[]" value="0">
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr> -->
-                                    <tr id="last"></tr>
                                 </tbody>
                             </table>
-                            <input type="submit" value="Update" class="btn btn-success float-right" />
+                            <label>Upload File <small class="text-danger pl-3">.pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png</small></label>
+                            <div class="custom-file">
+                                <div class="input-group">
+                                    <input type="file" name="collection_files[]" multiple>
+                                </div>
+                                <input type="hidden" class="form-control" name="upload_date" value="<?php echo date("Y-m-d"); ?>">
+                            </div>
                         </div>
+                        <input type="submit" value="Update" class="btn btn-success float-right" />
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
+            <!-- /.card -->
         </div>
-        <?= form_close() ?>
-    </section>
+</div>
+<?= form_close() ?>
+</section>
 </div>
 <!-- /.content-wrapper -->
 

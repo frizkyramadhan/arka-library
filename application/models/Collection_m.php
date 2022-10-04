@@ -14,15 +14,16 @@ class Collection_m extends CI_Model
             ->select('collections.*, categories.category_name, categories.slug')
             ->join('categories', 'collections.category_id = categories.id', 'left')
             ->order_by('category_name', 'asc')
+            ->order_by('collection_date', 'desc')
             ->get('collections')->result();
     }
 
     function selectAllBySlug($slug, $limit = null, $start = null)
     {
         $post = $this->session->userdata('archive');
-        $this->db->select('collections.*, categories.category_name, categories.slug, attachments.collection_file');
+        $this->db->select('collections.*, categories.category_name, categories.slug');
         $this->db->join('categories', 'collections.category_id = categories.id', 'left');
-        $this->db->join('attachments', 'attachments.collection_id = collections.id', 'right');
+        // $this->db->join('attachments', 'attachments.collection_id = collections.id', 'inner');
         $this->db->where('slug', $slug);
         // if (!empty($post['unit_type'])) {
         //     if ($post['unit_type'] == 'null') {
@@ -37,9 +38,9 @@ class Collection_m extends CI_Model
         if (!empty($post['collection_name'])) {
             $this->db->like("collections.collection_name", $post['collection_name']);
         }
-        if (!empty($post['collection_file'])) {
-            $this->db->like("attachments.collection_file", $post['collection_file']);
-        }
+        // if (!empty($post['collection_file'])) {
+        //     $this->db->like("attachments.collection_file", $post['collection_file']);
+        // }
         $this->db->limit($limit, $start);
         $this->db->order_by('category_name', 'asc');
         $collection = $this->db->get('collections');
