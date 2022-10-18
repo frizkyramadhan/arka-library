@@ -11,8 +11,10 @@ class Collection_m extends CI_Model
     function selectAll()
     {
         return $this->db
-            ->select('collections.*, categories.category_name, categories.slug')
+            ->select('collections.*, categories.category_name, categories.slug, users.name, types.type_name')
             ->join('categories', 'collections.category_id = categories.id', 'left')
+            ->join('users', 'collections.user_id = users.id', 'left')
+            ->join('types', 'collections.type_id = types.id', 'left')
             ->order_by('category_name', 'asc')
             ->order_by('collection_date', 'desc')
             ->get('collections')->result();
@@ -23,8 +25,10 @@ class Collection_m extends CI_Model
         $post = $this->session->userdata('archive');
         $this->db->select('collections.*, categories.category_name, categories.slug');
         $this->db->join('categories', 'collections.category_id = categories.id', 'left');
+        $this->db->join('types', 'collections.type_id = types.id', 'left');
         // $this->db->join('attachments', 'attachments.collection_id = collections.id', 'inner');
         $this->db->where('slug', $slug);
+        $this->db->where('collection_status', 1);
         // if (!empty($post['unit_type'])) {
         //     if ($post['unit_type'] == 'null') {
         //         $this->db->where("collections.unit_type_id IS NULL");
@@ -42,7 +46,7 @@ class Collection_m extends CI_Model
         //     $this->db->like("attachments.collection_file", $post['collection_file']);
         // }
         $this->db->limit($limit, $start);
-        $this->db->order_by('category_name', 'asc');
+        $this->db->order_by('collection_date', 'desc');
         $collection = $this->db->get('collections');
         return $collection;
     }

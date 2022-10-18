@@ -39,6 +39,7 @@
                         }
                         ?>
                         <?= $this->session->flashdata('message'); ?>
+
                         <div class="form-group">
                             <input type="hidden" name="id" value="<?= $this->uuid->v4(); ?>">
                             <label>Category</label>
@@ -61,6 +62,17 @@
                             <input type="text" class="form-control" name="collection_name" value="<?= set_value('collection_name') ?>">
                             <?= form_error('collection_name', '<small class="text-danger">', '</small>'); ?>
                         </div>
+                        <div class="form-group">
+                            <label>Collection Type</label>
+                            <select id="type_id" name="type_id" class="form-control custom-select" autofocus="TRUE">
+                                <option value="" selected disabled>Choose Type</option>
+                                <?php foreach ($types as $t) : ?>
+                                    <option <?= set_select('type_id', $t->id) ?> value="<?= $t->id ?>"><?= $t->type_name;  ?></option>
+                                <?php endforeach; ?>
+                                <option value="newType">Define New</option>
+                            </select>
+                            <?= form_error('type_id', '<small class="text-danger">', '</small>'); ?>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                 </div>
@@ -72,22 +84,23 @@
                         <h3 class="card-title">Files</h3>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <div class="form-group">
-                                <label>Upload File <small class="text-danger pl-3">.pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png</small></label>
-                                <input type="file" name="collection_files[]" multiple required>
-                                <input type="hidden" class="form-control" name="upload_date" value="<?php echo date("Y-m-d"); ?>">
+                        <label>Upload File <small class="text-danger pl-3">.pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png</small></label>
+                        <div class="custom-file">
+                            <div class="input-group">
+                                <input type="file" name="collection_files[]" multiple>
                             </div>
-                            <input type="submit" value="Save" class="btn btn-success float-right" />
+                            <input type="hidden" class="form-control" name="upload_date" value="<?php echo date("Y-m-d"); ?>">
                         </div>
+                        <input type="submit" value="Save" class="btn btn-success float-right" />
                     </div>
-                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
             </div>
+            <!-- /.card -->
         </div>
-        <?= form_close() ?>
-    </section>
+</div>
+<?= form_close() ?>
+</section>
 </div>
 <!-- /.content-wrapper -->
 
@@ -109,6 +122,33 @@
                 <div class="form-group">
                     <label for="inputName">Slug</label>
                     <input type="text" class="form-control preview_slug" name="slug" required>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+            <?= form_close() ?>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="newTypeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Type</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-text="true">&times;</span>
+                </button>
+            </div>
+            <?= form_open('type/addFromCollection') ?>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputName">Type</label>
+                    <input type="text" class="form-control judul" name="type_name" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">

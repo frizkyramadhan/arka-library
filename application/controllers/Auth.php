@@ -20,6 +20,7 @@ class Auth extends CI_Controller
         $row = $query->row();
         $data = $this->auth_m->dataPengguna($row->nik);
         $params = array(
+          'id' => $data->id,
           'nik' => $data->nik,
           'name' => $data->name,
           'level' => $data->level

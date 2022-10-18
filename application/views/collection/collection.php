@@ -36,6 +36,7 @@
                                 <th>Date</th>
                                 <th>Category</th>
                                 <th>Name</th>
+                                <th>Type</th>
                                 <th>Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -48,6 +49,7 @@
                                     <td><?= $row->collection_date; ?></td>
                                     <td><?= $row->category_name; ?></td>
                                     <td><?= $row->collection_name; ?></td>
+                                    <td><?= $row->type_name; ?></td>
                                     <td>
                                         <?php if ($row->collection_status == 1) : ?>
                                             <span class="badge bg-success">Active</span>
@@ -95,6 +97,12 @@
                             </p>
                             <p>Collection Name
                                 <b class="d-block"><?= $row->collection_name ?></b>
+                            </p>
+                            <p>Collection Type
+                                <b class="d-block"><?= $row->type_name ?></b>
+                            </p>
+                            <p>Upload By
+                                <b class="d-block"><?= $row->name ?></b>
                             </p>
                             <h5 class="mt-3 text-muted">Collection Files</h5>
                             <ul class="list-unstyled">

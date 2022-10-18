@@ -82,6 +82,14 @@
                 </a>
               </li>
             </ul>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="<?= base_url('type') ?>" class="nav-link <?= $this->uri->segment(1) == "type" ? "active" : "" ?>">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Types</p>
+                </a>
+              </li>
+            </ul>
           </li>
           <?php if ($level_session == 'admin') : ?>
             <li class="nav-item">
@@ -99,8 +107,7 @@
   <!-- /.sidebar-menu -->
   <!-- /.sidebar -->
   <div class="sidebar-custom">
-    <!-- <a href="#" class="btn btn-link"><i class="fas fa-cogs"></i></a> -->
-    <a href="<?= base_url('auth/logout') ?>" class="btn btn-block btn-danger">Logout</a>
+    <a href="<?= base_url('auth/logout') ?>" class="btn btn-block btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
   <!-- /.sidebar-custom -->
 </aside>

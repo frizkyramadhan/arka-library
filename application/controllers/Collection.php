@@ -34,7 +34,12 @@ class Collection extends CI_Controller
         $data['category_list'] = $this->category_m->category_list();
 
         $data['categories'] = $this->db->where('category_status', '1')->order_by('category_name', 'ASC')->get('categories')->result();
+        $data['types'] = $this->db->where('type_status', '1')->order_by('type_name', 'ASC')->get('types')->result();
 
+        $ci = &get_instance();
+        $user_id = $ci->session->userdata('id');
+
+        $this->form_validation->set_rules('type_id', 'Type', 'required');
         $this->form_validation->set_rules('category_id', 'Category', 'required');
         $this->form_validation->set_rules('collection_name', 'Collection Name', 'required');
 
@@ -51,8 +56,11 @@ class Collection extends CI_Controller
                 'category_id' => $this->input->post('category_id'),
                 'collection_date' => $this->input->post('collection_date'),
                 'collection_name' => $this->input->post('collection_name'),
-                'collection_status' => 1
+                'collection_status' => 1,
+                'type_id' => $this->input->post('type_id'),
+                'user_id' => $user_id,
             ];
+
             // $this->db->set('collections.id', 'UUID()', FALSE);
             $this->db->insert('collections', $input);
             // upload document
@@ -83,7 +91,7 @@ class Collection extends CI_Controller
                     // Set preference
                     $config['upload_path'] = './uploads/' . $doc['slug'];
                     $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png';
-                    $config['max_size'] = '0'; // max_size in kb
+                    $config['max_size'] = 0; // max_size in kb
 
                     //Load upload library
                     $this->load->library('upload', $config);
@@ -127,9 +135,11 @@ class Collection extends CI_Controller
         $data['category_list'] = $this->category_m->category_list();
 
         $data['categories'] = $this->db->where('category_status', '1')->order_by('category_name', 'ASC')->get('categories')->result();
+        $data['types'] = $this->db->where('type_status', '1')->order_by('type_name', 'ASC')->get('types')->result();
         $data['collection'] = $this->db->select('collections.*, categories.category_name, categories.slug')->join('categories', 'collections.category_id = categories.id', 'left')->where('collections.id', $id)->get('collections')->row();
         $data['attachments'] = $this->db->where('collection_id', $id)->get('attachments')->result();
 
+        $this->form_validation->set_rules('type_id', 'Type', 'required');
         $this->form_validation->set_rules('category_id', 'Category', 'required');
         $this->form_validation->set_rules('collection_name', 'Collection Name', 'required');
         $this->form_validation->set_rules('collection_status', 'Collection Status', 'required');
@@ -146,7 +156,8 @@ class Collection extends CI_Controller
                 'category_id' => $this->input->post('category_id'),
                 'collection_date' => $this->input->post('collection_date'),
                 'collection_name' => $this->input->post('collection_name'),
-                'collection_status' => $this->input->post('collection_status')
+                'collection_status' => $this->input->post('collection_status'),
+                'type_id' => $this->input->post('type_id')
             ];
             $this->db->where('id', $id);
             $this->db->update('collections', $input);

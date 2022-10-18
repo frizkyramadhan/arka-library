@@ -66,6 +66,13 @@
     }
   });
 
+  $('#type_id').change(function() {
+    var opval = $(this).val();
+    if (opval == "newType") {
+      $('#newTypeModal').modal("show");
+    }
+  });
+
   $(function() {
     bsCustomFileInput.init();
   });
