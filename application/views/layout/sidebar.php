@@ -57,7 +57,7 @@
         <?php endforeach; ?>
 
         <?php if ($level_session != 'user') : ?>
-          <li class="nav-header">ADMINISTRATOR</li>
+          <li class="nav-header">SUPERUSER</li>
           <li class="nav-item">
             <a href="<?= base_url('collection') ?>" class="nav-link <?= $this->uri->segment(1) == "collection" ? "active" : "" ?>">
               <i class="nav-icon fas fa-book"></i>
@@ -92,11 +92,20 @@
             </ul>
           </li>
           <?php if ($level_session == 'admin') : ?>
+            <li class="nav-header">ADMINISTRATOR</li>
             <li class="nav-item">
               <a href="<?= base_url('user') ?>" class="nav-link <?= $this->uri->segment(1) == "user" ? "active" : "" ?>">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
                   Users
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<?= base_url('department') ?>" class="nav-link <?= $this->uri->segment(1) == "department" ? "active" : "" ?>">
+                <i class="nav-icon fas fa-briefcase"></i>
+                <p>
+                  Departments
                 </p>
               </a>
             </li>
