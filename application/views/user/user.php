@@ -35,6 +35,7 @@
                                 <th>No.</th>
                                 <th>NIK</th>
                                 <th>Name</th>
+                                <th>Department</th>
                                 <th>Role</th>
                                 <th>Status</th>
                                 <th class="text-center">Action</th>
@@ -47,6 +48,7 @@
                                     <td><?= $i++; ?></td>
                                     <td><?= $row->nik; ?></td>
                                     <td><?= $row->name; ?></td>
+                                    <td><?= $row->department_name; ?></td>
                                     <td><?= $row->level; ?></td>
                                     <td>
                                         <?php if ($row->user_status == 1) : ?>
@@ -98,6 +100,15 @@
                         <label for="inputName">Password</label>
                         <input type="password" class="form-control" name="password" required>
                     </div>
+                    <div class="form-group">
+                        <label for="inputName">Department</label>
+                        <select id="department_id" name="department_id" class="form-control custom-select" autofocus="TRUE">
+                            <option value="" selected disabled>Choose Department</option>
+                            <?php foreach ($departments as $d) : ?>
+                                <option <?= set_select('department_id', $d->id) ?> value="<?= $d->id ?>"><?= $d->department_name;  ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -134,6 +145,15 @@
                         <div class="form-group">
                             <label for="inputName">Password</label>
                             <input type="password" class="form-control" name="password" value="<?= $row->password ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Department</label>
+                            <select id="department_id" name="department_id" class="form-control custom-select" autofocus="TRUE">
+                                <option value="" selected disabled>Choose Department</option>
+                                <?php foreach ($departments as $d) : ?>
+                                    <option <?= set_select('department_id', $d->id) ?> value="<?= $d->id ?>" <?= $row->department_id == $d->id ? "selected" : "" ?>><?= $d->department_name;  ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="inputStatus">Status</label>

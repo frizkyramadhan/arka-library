@@ -10,7 +10,10 @@ class User_m extends CI_Model
 
     function selectAll()
     {
-        return $this->db->order_by('nik', 'asc')->get('users')->result();
+        return $this->db
+            ->select('users.*, departments.department_name')
+            ->join('departments', 'users.department_id = departments.id', 'left')
+            ->order_by('nik', 'asc')->get('users')->result();
     }
 
     function insert($data)

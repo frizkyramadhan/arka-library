@@ -18,6 +18,7 @@ class User extends CI_Controller
         $data['subtitle'] = "User Data";
         $data['user'] = $this->user_m->selectAll();
         $data['category_list'] = $this->category_m->category_list();
+        $data['departments'] = $this->db->where('department_status', '1')->order_by('department_name', 'ASC')->get('departments')->result();
 
         $this->load->view('layout/header', $data);
         $this->load->view('layout/navbar');
@@ -32,6 +33,7 @@ class User extends CI_Controller
             'nik' => $this->input->post('nik'),
             'name' => $this->input->post('name'),
             'password' => $this->input->post('password'),
+            'department_id' => $this->input->post('department_id'),
             'user_status' => 1,
             'level' => 'user'
         ];
@@ -61,6 +63,7 @@ class User extends CI_Controller
             'nik' => $this->input->post('nik'),
             'name' => $this->input->post('name'),
             'password' => $this->input->post('password'),
+            'department_id' => $this->input->post('department_id'),
             'user_status' => $this->input->post('user_status'),
             'level' => $this->input->post('level')
         ];
