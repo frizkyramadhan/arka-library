@@ -28,7 +28,7 @@
         <?= $this->session->flashdata('message'); ?>
         <?= form_open('auth/process') ?>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" placeholder="NIK" name="nik" required>
+          <input type="text" class="form-control" placeholder="NIK" name="nik" required autofocus>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-id-badge"></span>
