@@ -16,7 +16,7 @@ class Archive extends CI_Controller
         $data['title'] = "Archive Data - ARKA Plant Library";
         $data['subtitle'] = "Archive Data";
         $data['category_list'] = $this->category_m->category_list();
-        $data['category'] = $this->category_m->select($slug);
+        $data['category'] = $this->category_m->selectSlug($slug);
 
         $this->load->library('pagination');
 
@@ -32,7 +32,7 @@ class Archive extends CI_Controller
 
         $config['base_url'] = site_url('archive/list/' . $slug);
         $config['total_rows'] = $this->collection_m->selectAllBySlug($slug)->num_rows();
-        $config['per_page'] = 10;
+        $config['per_page'] = 2;
         $config['uri_segment'] = 4;
         $config['first_link'] = 'First';
         $config['last_link'] = 'Last';

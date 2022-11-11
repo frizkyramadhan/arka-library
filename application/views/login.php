@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login - ARKA IT Library</title>
+  <title>Login - ARKA Library</title>
 
   <!-- Google Font: Source Sans Pro -->
   <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> -->
@@ -22,7 +22,7 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-        <a href="<?= base_url() ?>" class="h1"><b>ARKA</b> IT Library</a>
+        <a href="<?= base_url() ?>" class="h1"><b>ARKA</b> Library</a>
       </div>
       <div class="card-body">
         <?= $this->session->flashdata('message'); ?>
@@ -53,6 +53,13 @@
           </div>
         </div>
         <?= form_close() ?>
+        <div class="row">
+          <div class="col-12">
+            <div class="mt-5 text-muted text-center">
+              Don't have an account? <a href="<?= base_url('auth/register') ?>" tabindex="4"><b>Register!</b></a>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- /.card-body -->
     </div>

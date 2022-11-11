@@ -26,8 +26,9 @@ class Auth_m extends CI_Model
 
     public function dataPengguna($nik)
     {
-        $this->db->select('*');
+        $this->db->select('users.*, departments.id as department_id, departments.department_name, departments.department_code');
         $this->db->from('users');
+        $this->db->join('departments', 'departments.id = users.department_id');
         $this->db->where('nik', $nik);
         $query = $this->db->get();
         return $query->row();

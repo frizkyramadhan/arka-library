@@ -30,6 +30,7 @@ class Department extends CI_Controller
   {
     $input = [
       'department_name' => $this->input->post('department_name'),
+      'department_code' => $this->input->post('department_code'),
       'department_status' => 1,
     ];
     $this->db->insert('departments', $input);
@@ -56,6 +57,7 @@ class Department extends CI_Controller
     $this->db->where('id', $id);
     $input = [
       'department_name' => $this->input->post('department_name'),
+      'department_code' => $this->input->post('department_code'),
       'department_status' => $this->input->post('department_status')
     ];
     $this->db->update('departments', $input);

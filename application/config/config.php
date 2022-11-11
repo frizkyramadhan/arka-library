@@ -23,7 +23,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/it-library';
+$config['base_url'] = 'http://localhost/arka-library';
 
 /*
 |--------------------------------------------------------------------------
@@ -326,7 +326,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/userguide3/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'Pl4nT-L1B';
+$config['encryption_key'] = 'Ark4-LibR4ry';
 
 /*
 |--------------------------------------------------------------------------

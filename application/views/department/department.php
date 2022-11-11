@@ -34,6 +34,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Department Name</th>
+                                <th>Department Code</th>
                                 <th>Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -44,6 +45,7 @@
                                 <tr>
                                     <td><?= $i++; ?></td>
                                     <td><?= $row->department_name; ?></td>
+                                    <td><?= $row->department_code; ?></td>
                                     <td>
                                         <?php if ($row->department_status == 1) : ?>
                                             <span class="badge bg-success">Active</span>
@@ -86,6 +88,10 @@
                         <label for="inputName">Department</label>
                         <input type="text" class="form-control judul" name="department_name" required autofocus>
                     </div>
+                    <div class="form-group">
+                        <label for="inputName">Code</label>
+                        <input type="text" class="form-control judul" name="department_code" required>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -114,6 +120,10 @@
                         <div class="form-group">
                             <label for="inputName">Department</label>
                             <input type="text" class="form-control judul" name="department_name" value="<?= $row->department_name ?>" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Code</label>
+                            <input type="text" class="form-control judul" name="department_code" value="<?= $row->department_code ?>" required>
                         </div>
                         <div class="form-group">
                             <label for="inputStatus">Status</label>

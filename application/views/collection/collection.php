@@ -19,49 +19,54 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="card card-secondary">
+            <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Collection Table</h3>
+                    <h3 class="card-title"><?= $category->category_name ?> - SubCategory</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <?= $this->session->flashdata('message'); ?>
                     <div class="text-left">
-                        <a href="<?= base_url('collection/add') ?>" class="mb-3 btn btn-secondary"><i class="fa fa-plus"></i> Add Collection</a>
+                        <a href="" class="mb-3 btn btn-primary" data-toggle="modal" data-target="#modal-default"><i class="fa fa-plus"></i> Add SubCategory</a>
                     </div>
+                    <!-- <?php echo "<pre>";
+                            print_r($subcategory_list);
+                            echo "</pre>" ?> -->
+                    <!-- <?php echo "<pre>";
+                            print_r($category);
+                            echo "</pre>" ?> -->
                     <table id="example1" class="table table-bordered table-striped table-condensed">
                         <thead>
                             <tr>
-                                <th>No.</th>
-                                <th>Date</th>
-                                <th>Category</th>
-                                <th>Name</th>
-                                <th>Type</th>
-                                <th>Status</th>
-                                <th class="text-center">Action</th>
+                                <th width="5%">No.</th>
+                                <th>SubCategory</th>
+                                <th width="15%">Doc. Amount</th>
+                                <!-- <th>Status</th> -->
+                                <th class="text-center" width="20%">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php $i = 1; ?>
-                            <?php foreach ($collection as $row) : ?>
+                            <?php foreach ($subcategory_list as $row) : ?>
                                 <tr>
                                     <td><?= $i++; ?></td>
-                                    <td><?= $row->collection_date; ?></td>
-                                    <td><?= $row->category_name; ?></td>
-                                    <td><?= $row->collection_name; ?></td>
-                                    <td><?= $row->type_name; ?></td>
-                                    <td>
-                                        <?php if ($row->collection_status == 1) : ?>
+                                    <td><?= $row->subcategory_name; ?></td>
+                                    <td class="text-right">
+                                        <?php $count = $this->db->query("SELECT * FROM attachments LEFT JOIN collections on attachments.collection_id = collections.id LEFT JOIN subcategories on collections.subcategory_id = subcategories.id WHERE subcategories.id = '$row->id'")->num_rows();
+                                        echo $count; ?>
+                                    </td>
+                                    <!-- <td>
+                                        <?php if ($row->subcategory_status == 1) : ?>
                                             <span class="badge bg-success">Active</span>
                                         <?php else : ?>
                                             <span class="badge bg-danger">Inactive</span>
                                         <?php endif; ?>
-                                    </td>
+                                    </td> -->
                                     <td>
                                         <div align="center">
-                                            <a href="" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modal-default-<?= $row->id ?>" title="Detail"><i class="fa fa-info-circle"></i></a>
-                                            <a href="<?php echo base_url('collection/edit/' . $row->id); ?>" class="btn btn-success btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
-                                            <a href="<?php echo base_url('collection/delete/' . $row->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you want to delete this collection?')" title="Delete"><i class="fa fa-trash-alt"></i></a>
+                                            <a href="<?= base_url('collection/detail/' . $row->id) ?>" class="btn btn-info btn-sm" title="Detail"><i class="fas fa-binoculars"></i> See Collections</a>
+                                            <!-- <a href="<?php echo base_url('collection/edit/' . $row->id); ?>" class="btn btn-success btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
+                                            <a href="<?php echo base_url('collection/delete/' . $row->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you want to delete this collection?')" title="Delete"><i class="fa fa-trash-alt"></i></a> -->
                                         </div>
                                     </td>
                                 </tr>
@@ -77,7 +82,37 @@
     </div>
     <!-- /.content-wrapper -->
 
-    <?php foreach ($collection as $row) : ?>
+    <!-- add subcategory -->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add SubCategory for <?= $category->category_name ?></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <?= form_open('category/add_subcategory_from_collection/' . $category->slug . '/' . $category->id) ?>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="inputName">SubCategory</label>
+                        <input type="text" class="form-control judul" name="subcategory_name" required>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+                <?= form_close() ?>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+
+    <!-- <?php foreach ($collection as $row) : ?>
         <div class="modal fade" id="modal-default-<?= $row->id ?>">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -122,9 +157,6 @@
                         <a href="<?php echo base_url('collection/edit/' . $row->id); ?>" class="btn btn-success">Edit</a>
                     </div>
                 </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
+            </div
         </div>
-        <!-- /.modal -->
-    <?php endforeach; ?>
+    <?php endforeach; ?> -->
