@@ -3,7 +3,7 @@
   <!-- Brand Logo -->
   <a href="<?= base_url() ?>" class="brand-link">
     <img src="<?= base_url('assets/dist/img/AdminLTELogo.png') ?>" alt="Plant Library" class="brand-image img-circle elevation-3" style="opacity: .8">
-    <span class="brand-text font-weight-light">ARKA IT Library</span>
+    <span class="brand-text font-weight-light">ARKA Library</span>
   </a>
 
   <!-- Sidebar -->
@@ -17,8 +17,15 @@
           $ci = &get_instance();
           $name_session = $ci->session->userdata('name');
           $level_session = $ci->session->userdata('level');
+          $dcode = $ci->session->userdata('department_code');
           echo $name_session;
           ?>
+          <!-- <pre>
+            <?php
+            // var_dump($ci->session);
+            // die;
+            ?>
+          </pre> -->
         </div>
       </div>
     </div>
@@ -47,8 +54,8 @@
         </li>
         <?php foreach ($category_list as $list) : ?>
           <li class="nav-item">
-            <a href="<?= base_url('archive/list/' . $list->slug) ?>" class="nav-link <?= $this->uri->segment(3) == $list->slug ? "active" : "" ?>">
-              <?= $this->uri->segment(3) == $list->slug ? "<i class='nav-icon fas fa-folder-open'></i>" : "<i class='nav-icon fas fa-folder'></i>" ?>
+            <a href="<?= base_url('collection/' . $list->slug) ?>" class="nav-link <?= $this->uri->segment(2) == $list->slug ? "active" : "" ?>">
+              <?= $this->uri->segment(2) == $list->slug ? "<i class='nav-icon fas fa-folder-open'></i>" : "<i class='nav-icon fas fa-folder'></i>" ?>
               <p>
                 <?= $list->category_name ?>
               </p>
@@ -57,38 +64,30 @@
         <?php endforeach; ?>
 
         <?php if ($level_session != 'user') : ?>
-          <li class="nav-header">ADMINISTRATOR</li>
+          <li class="nav-header">MASTER DATA</li>
           <li class="nav-item">
-            <a href="<?= base_url('collection') ?>" class="nav-link <?= $this->uri->segment(1) == "collection" ? "active" : "" ?>">
-              <i class="nav-icon fas fa-book"></i>
+            <a href="<?= base_url('category') ?>" class="nav-link <?= $this->uri->segment(1) == "category" ? "active" : "" ?>">
+              <i class="nav-icon fas fa-sitemap"></i>
               <p>
-                Collection
+                Categories
               </p>
             </a>
-          </li>
-          <li class="nav-item <?= $this->uri->segment(1) == "collection_type" || $this->uri->segment(1) == "category" || $this->uri->segment(1) == "unit_type" ? "menu-open" : "" ?>">
-            <a href="#" class="nav-link <?= $this->uri->segment(1) == "collection_type" || $this->uri->segment(1) == "category" || $this->uri->segment(1) == "unit_type" ? "active" : "" ?>">
-              <i class="nav-icon fas fa-database"></i>
-              <p>
-                Master Data
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('category') ?>" class="nav-link <?= $this->uri->segment(1) == "category" ? "active" : "" ?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Categories</p>
-                </a>
-              </li>
-            </ul>
           </li>
           <?php if ($level_session == 'admin') : ?>
+            <li class="nav-header">ADMINISTRATOR</li>
             <li class="nav-item">
               <a href="<?= base_url('user') ?>" class="nav-link <?= $this->uri->segment(1) == "user" ? "active" : "" ?>">
                 <i class="nav-icon fas fa-users"></i>
                 <p>
                   Users
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="<?= base_url('department') ?>" class="nav-link <?= $this->uri->segment(1) == "department" ? "active" : "" ?>">
+                <i class="nav-icon fas fa-briefcase"></i>
+                <p>
+                  Departments
                 </p>
               </a>
             </li>
@@ -99,8 +98,7 @@
   <!-- /.sidebar-menu -->
   <!-- /.sidebar -->
   <div class="sidebar-custom">
-    <!-- <a href="#" class="btn btn-link"><i class="fas fa-cogs"></i></a> -->
-    <a href="<?= base_url('auth/logout') ?>" class="btn btn-block btn-danger">Logout</a>
+    <a href="<?= base_url('auth/logout') ?>" class="btn btn-block btn-danger"><i class="fas fa-sign-out-alt"></i> Logout</a>
   </div>
   <!-- /.sidebar-custom -->
 </aside>

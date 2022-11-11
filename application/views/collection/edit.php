@@ -61,6 +61,17 @@
                             <?= form_error('collection_name', '<small class="text-danger">', '</small>'); ?>
                         </div>
                         <div class="form-group">
+                            <label>Collection Type</label>
+                            <select id="type_id" name="type_id" class="form-control custom-select" autofocus="TRUE">
+                                <option value="" selected disabled>Choose Type</option>
+                                <?php foreach ($types as $t) : ?>
+                                    <option <?= set_select('type_id', $t->id) ?> value="<?= $t->id ?>" <?= $collection->type_id == $t->id ? "selected" : "" ?>><?= $t->type_name;  ?></option>
+                                <?php endforeach; ?>
+                                <option value="newType">Define New</option>
+                            </select>
+                            <?= form_error('type_id', '<small class="text-danger">', '</small>'); ?>
+                        </div>
+                        <div class="form-group">
                             <label>Status</label>
                             <select id="collection_status" name="collection_status" class="form-control custom-select">
                                 <option value="1" <?= $collection->collection_status == 1 ? "selected" : "" ?>>Active</option>
@@ -124,20 +135,20 @@
 </div>
 <!-- /.content-wrapper -->
 
-<div class="modal fade" id="newManufactureModal">
+<div class="modal fade" id="newCategoryModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add Manufacture</h4>
+                <h4 class="modal-title">Add Category</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-text="true">&times;</span>
                 </button>
             </div>
-            <?= form_open('manufacture/addFromCollection') ?>
+            <?= form_open('category/addFromCollection') ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="inputName">Manufacture</label>
-                    <input type="text" class="form-control judul" name="manufacture" required>
+                    <label for="inputName">Category</label>
+                    <input type="text" class="form-control judul" name="category_name" required>
                 </div>
                 <div class="form-group">
                     <label for="inputName">Slug</label>
@@ -154,22 +165,21 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
 
-<div class="modal fade" id="newUnittypeModal">
+<div class="modal fade" id="newTypeModal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Add Unit Type</h4>
+                <h4 class="modal-title">Add Type</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                    <span aria-text="true">&times;</span>
                 </button>
             </div>
-            <?= form_open('unit_type/addFromCollection') ?>
+            <?= form_open('type/addFromCollection') ?>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="inputName">Unit Type</label>
-                    <input type="text" class="form-control" name="unit_type" required>
+                    <label for="inputName">Type</label>
+                    <input type="text" class="form-control judul" name="type_name" required>
                 </div>
             </div>
             <div class="modal-footer justify-content-between">
@@ -182,35 +192,6 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
-<!-- /.modal -->
-
-<div class="modal fade" id="newCollectiontypeModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Add Collection Type</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <?= form_open('collection_type/addFromCollection') ?>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="inputName">Collection Type</label>
-                    <input type="text" class="form-control judul" name="collection_type" autofocus="TRUE" required>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-            <?= form_close() ?>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
 
 <script src="<?= base_url('assets/plugins/jquery/jquery.min.js'); ?>"></script>
 <script type="text/javascript">

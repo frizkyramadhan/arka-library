@@ -35,6 +35,7 @@
                                 <th>No.</th>
                                 <th>Category Name</th>
                                 <th>Slug</th>
+                                <th>Department</th>
                                 <th>Status</th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -46,6 +47,7 @@
                                     <td><?= $i++; ?></td>
                                     <td><?= $row->category_name; ?></td>
                                     <td><?= $row->slug; ?></td>
+                                    <td><?= $row->department_name; ?></td>
                                     <td>
                                         <?php if ($row->category_status == 1) : ?>
                                             <span class="badge bg-success">Active</span>
@@ -55,6 +57,7 @@
                                     </td>
                                     <td>
                                         <div align="center">
+                                            <a href="<?php echo base_url('category/subcategory/' . $row->id); ?>" class="btn btn-warning btn-sm" title="Subcategory"><i class="fas fa-sign-in-alt"></i></a>
                                             <a href="<?php echo base_url('category/edit/' . $row->id); ?>" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-default-<?= $row->id ?>" title="Edit"><i class="fa fa-edit"></i></a>
                                             <a href="<?php echo base_url('category/delete/' . $row->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you want to delete this category?')" title="Delete"><i class="fa fa-trash-alt"></i></a>
                                         </div>
@@ -92,6 +95,22 @@
                         <label for="inputName">Slug</label>
                         <input type="text" class="form-control preview_slug" name="slug" required>
                     </div>
+                    <div class="form-group">
+                        <label for="inputName">Department</label>
+                        <select id="department_id" name="department_id" class="form-control custom-select" required>
+                            <?php if ($getSession->level == 'admin') : ?>
+                                <option value="" selected disabled>Choose Department</option>
+                                <?php foreach ($departments as $d) : ?>
+                                    <option <?= set_select('department_id', $d->id) ?> value="<?= $d->id ?>"><?= $d->department_name;  ?></option>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <option value="" selected disabled>Choose Department</option>
+                                <?php foreach ($departments as $d) : ?>
+                                    <option <?= set_select('department_id', $d->id) ?> value="<?= $d->id ?>" <?= $getSession->department_id == $d->id ? 'selected' : 'disabled' ?>><?= $d->department_name;  ?></option>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -124,6 +143,22 @@
                         <div class="form-group">
                             <label for="inputName">Slug</label>
                             <input type="text" class="form-control preview_slug" name="slug" value="<?= $row->slug ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">Department</label>
+                            <select id="department_id" name="department_id" class="form-control custom-select" required>
+                                <?php if ($getSession->level == 'admin') : ?>
+                                    <option value="" selected disabled>Choose Department</option>
+                                    <?php foreach ($departments as $d) : ?>
+                                        <option <?= set_select('department_id', $d->id) ?> value="<?= $d->id ?>" <?= $row->department_id == $d->id ? "selected" : "" ?>><?= $d->department_name;  ?></option>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <option value="" selected disabled>Choose Department</option>
+                                    <?php foreach ($departments as $d) : ?>
+                                        <option <?= set_select('department_id', $d->id) ?> value="<?= $d->id ?>" <?= $getSession->department_id == $d->id ? "selected" : "disabled" ?>><?= $d->department_name;  ?></option>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="inputStatus">Status</label>
