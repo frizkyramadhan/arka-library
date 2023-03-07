@@ -104,62 +104,55 @@
                   print_r($query);
                   echo "</pre>" ?> -->
             <div class="table-responsive">
-              <table id="example1" class="table table-sm table-bordered table-striped table-condensed">
+              <table class="table table-sm table-bordered table-condensed">
                 <thead>
-                  <tr>
-                    <th class="align-middle" width="5%">No.</th>
-                    <th class="align-middle" width="10%">Periode</th>
-                    <th class="align-middle">Collection Name</th>
-                    <th class="align-middle" width="10%">Upload By</th>
-                    <th class="align-middle" width="10%">Status</th>
-                    <th class="align-middle text-center" width="10%">Action</th>
-                  </tr>
+                  <?php foreach ($collection_list->result() as $key => $row) : ?>
+                    <tr class="table-active">
+                      <th class="align-middle" width="10%">Periode</th>
+                      <th class="align-middle">Collection Name</th>
+                      <th class="align-middle" width="10%">Created By</th>
+                      <th class="align-middle text-center" width="10%">Status</th>
+                      <th class="align-middle text-center" width="10%">Action</th>
+                    </tr>
                 </thead>
                 <tbody>
-                  <?php if (empty($collection_list->result())) : ?>
-                    <td colspan="6">
-                      <div align="center">No Data Available</div>
-                    </td>
-                  <?php else : ?>
-                    <?php $no = $this->uri->segment(4) ? $this->uri->segment(4) + 1 : 1; ?>
-                    <?php foreach ($collection_list->result() as $key => $row) : ?>
-                      <tr>
-                        <td class="align-middle text-center"><?= $no++ ?></td>
-                        <td class="align-middle"><?= date('M-Y', strtotime($row->collection_date)); ?></td>
-                        <td class="align-middle text-bold"><?= $row->collection_name; ?></td>
-                        <td class="align-middle"><?= $row->name; ?></td>
-                        <td class="align-middle">
-                          <?php if ($row->collection_status == 1) : ?>
-                            <span class="badge bg-success">Active</span>
-                          <?php else : ?>
-                            <span class="badge bg-danger">Inactive</span>
-                          <?php endif; ?>
-                        </td>
-                        <td class="align-middle">
-                          <div align="center">
-                            <a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-default-<?= $row->id ?>" title="Edit"><i class="fa fa-edit"></i></a>
-                            <a href="<?php echo base_url('collection/delete/' . $row->subcategory_id . '/' . $row->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Do you want to delete this collection and all its files?')" title="Delete"><i class="fa fa-trash-alt"></i></a>
-                          </div>
-                        </td>
-                      </tr>
-                      <?php $files = $this->db->query("select * from attachments where collection_id = '$row->id' order by id desc ")->result(); ?>
-                      <?php if ($files) : ?>
-                        <tr>
-                          <th></th>
-                          <th colspan="3">Files</th>
-                          <th class="text-center">Upload Date</th>
-                          <th class="text-center">Delete File?</th>
-                        </tr>
-                        <?php foreach ($files as $file) : ?>
-                          <td></td>
-                          <td colspan="3"><?php echo '<a href="' . base_url('uploads/' . $row->department_code . '/' . $row->slug . '/' . $row->subcategory_id . '/' . $file->collection_file) . '" class="btn-link text-secondary" target="_blank"><i class="far fa-file-alt"></i> ' . $file->collection_file . '</a>'; ?></td>
-                          <td><?php echo $file->upload_date; ?></td>
-                          <td class="text-center"><a href="<?php echo base_url('collection/deleteFile/' . $row->subcategory_id . '/' . $file->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Do you want to delete this collection?')" title="Delete"><i class="fas fa-unlink"></i></a></td>
-                          </tr>
-                        <?php endforeach; ?>
+                  <tr>
+                    <td class="align-middle"><?= date('Y-M', strtotime($row->collection_date)); ?></td>
+                    <td class="align-middle"><?= $row->collection_name; ?></td>
+                    <td class="align-middle"><?= $row->name; ?></td>
+                    <td class="align-middle text-center">
+                      <?php if ($row->collection_status == 1) : ?>
+                        <span class="badge bg-success">Active</span>
+                      <?php else : ?>
+                        <span class="badge bg-danger">Inactive</span>
                       <?php endif; ?>
+                    </td>
+                    <td class="align-middle">
+                      <div align="center">
+                        <a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#modal-default-<?= $row->id ?>" title="Edit"><i class="fa fa-edit"></i></a>
+                        <a href="<?php echo base_url('collection/delete/' . $row->subcategory_id . '/' . $row->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Do you want to delete this collection and all its files?')" title="Delete"><i class="fa fa-trash-alt"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <?php $files = $this->db->query("select attachments.*, users.name from attachments left join users on attachments.upload_by = users.id where collection_id = '$row->id' order by id desc ")->result(); ?>
+                  <?php if ($files) : ?>
+                    <tr class="table-active">
+                      <th></th>
+                      <th class="align-middle">Files</th>
+                      <th class="align-middle">Upload By</th>
+                      <th class="align-middle">Upload Date</th>
+                      <th class="align-middle text-center">Delete?</th>
+                    </tr>
+                    <?php foreach ($files as $file) : ?>
+                      <td></td>
+                      <td><?php echo '<a href="' . base_url('uploads/' . $row->department_code . '/' . $row->slug . '/' . $row->subcategory_id . '/' . $file->collection_file) . '" class="btn-link text-secondary" target="_blank"><i class="far fa-file-alt"></i> ' . $file->collection_file . '</a>'; ?></td>
+                      <td><?php echo $file->name; ?></td>
+                      <td><?php echo $file->upload_date; ?></td>
+                      <td class="text-center"><a href="<?php echo base_url('collection/deleteFile/' . $row->subcategory_id . '/' . $file->id); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Do you want to delete this collection?')" title="Delete"><i class="fas fa-unlink"></i></a></td>
+                      </tr>
                     <?php endforeach; ?>
                   <?php endif; ?>
+                <?php endforeach; ?>
                 </tbody>
               </table>
             </div>

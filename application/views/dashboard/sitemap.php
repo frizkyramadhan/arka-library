@@ -12,6 +12,9 @@
       </section>
       <!-- Main content -->
       <section class="content">
+        <div class="text-right">
+          <a href="<?php echo base_url('dashboard/') ?>" class="mb-3 btn bg-warning"><i class="fas fa-undo-alt"></i></i> Back</a>
+        </div>
         <ol>
           <?php foreach ($sitemap_category as $sg) : ?>
             <li>

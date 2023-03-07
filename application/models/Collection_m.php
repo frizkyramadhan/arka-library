@@ -120,7 +120,7 @@ class Collection_m extends CI_Model
         INNER JOIN departments ON collections.department_id = departments.id
         WHERE collections.department_id = $dept_id
         AND DATEDIFF(CURDATE(), upload_date) < 7
-        ORDER BY upload_date DESC
+        ORDER BY attachments.id DESC
         LIMIT 10");
         return $query->result();
     }
@@ -180,53 +180,48 @@ class Collection_m extends CI_Model
         return $query->result();
     }
 
-    // function insert($data)
-    // {
-    //     $this->db->insert('collection_type', $data);
-    // }
-
-    // function delete($id)
-    // {
-    //     $this->db->where('id', $id);
-    //     $this->db->delete('collection_type');
-    // }
-
-    // public function update($id)
-    // {
-    //     $this->db->where('id', $id)->update('collection_type', $_POST);
-    // }
-
-    // function select($id)
-    // {
-    //     return $this->db->get_where('collection_type', array('id' => $id))->row();
-    // }
-
-    // public function get_collection_type($id = null)
-    // {
-    //     $this->db->from('collection_type');
-    //     $this->db->order_by('collection_type', 'ASC');
-    //     $this->db->where('collection_type_status', 1);
-    //     if ($id != null) {
-    //         $this->db->where('id', $id);
-    //     }
-    //     $query = $this->db->get();
-    //     return $query;
-    // }
-
-    // public function get_unit_type($id = null)
-    // {
-    //     $this->db->from('unit_type');
-    //     $this->db->order_by('unit_type', 'ASC');
-    //     $this->db->where('unit_type_status', 1);
-    //     if ($id != null) {
-    //         $this->db->where('id', $id);
-    //     }
-    //     $query = $this->db->get();
-    //     return $query;
-    // }
-
     public function get_collection_by_category()
     {
         return $this->db->query("select subcategories.id, subcategory_name,(select count(id) from collections where collections.subcategory_id = subcategories.id) as count from subcategories order by count desc")->result();
+    }
+
+    function total_files_per_user()
+    {
+        $dept_id = $this->session->userdata('department_id');
+
+        $query = $this->db->query("SELECT 
+        u.id, u.name, 
+        (SELECT COUNT(attachments.id) FROM attachments JOIN collections ON attachments.collection_id = collections.id WHERE attachments.upload_by = u.id) AS count
+        FROM users u
+        WHERE u.department_id = $dept_id
+        GROUP BY u.id, u.name
+        ORDER BY u.name ASC");
+
+        return $query->result();
+    }
+
+    function getAttachmentByUser($user_id, $limit = null, $start = null)
+    {
+        $post = $this->session->userdata('archive');
+        $this->db->select('attachments.*, collections.collection_name, collections.subcategory_id, subcategories.subcategory_name, categories.category_name, categories.slug, users.name, departments.department_code, users.name');
+        $this->db->join('collections', 'attachments.collection_id = collections.id', 'left');
+        $this->db->join('subcategories', 'collections.subcategory_id = subcategories.id', 'left');
+        $this->db->join('categories', 'subcategories.category_id = categories.id', 'left');
+        $this->db->join('users', 'collections.user_id = users.id', 'left');
+        $this->db->join('departments', 'collections.department_id = departments.id', 'left');
+        $this->db->where('attachments.upload_by', $user_id);
+        if (!empty($post['date1']) && !empty($post['date2'])) {
+            $this->db->where("upload_date BETWEEN '$post[date1]' AND '$post[date2]'");
+        }
+        if (!empty($post['collection_file'])) {
+            $this->db->like("collection_file", $post['collection_file']);
+        }
+        if (!empty($post['collection_name'])) {
+            $this->db->like("collection_name", $post['collection_name']);
+        }
+        $this->db->limit($limit, $start);
+        $this->db->order_by('attachments.id', 'desc');
+        $attachments = $this->db->get('attachments');
+        return $attachments;
     }
 }

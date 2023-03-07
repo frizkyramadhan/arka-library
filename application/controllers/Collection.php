@@ -136,7 +136,7 @@ class Collection extends MY_Controller
                 // Set preference
                 $config['upload_path'] = './uploads/' . $doc['department_code'] . '/' . $doc['slug'] . '/' . $doc['subcategory_id'];
                 $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|rar|zip';
-                $config['max_size'] = '35000'; // max_size in kb
+                $config['max_size'] = 35000; // max_size in kb
 
                 //Load upload library
                 $this->load->library('upload', $config);
@@ -170,9 +170,10 @@ class Collection extends MY_Controller
                     $uploadData = $this->upload->data();
                     $doc_file = $uploadData['file_name'];
                     $upload_date = $_POST['upload_date'];
+                    $upload_by = $user_id;
                     $data['filenames'][] = $doc_file;
 
-                    $query = "INSERT INTO attachments (collection_id, collection_file, upload_date) VALUES ('$collection_id','$doc_file','$upload_date')";
+                    $query = "INSERT INTO attachments (collection_id, collection_file, upload_date, upload_by) VALUES ('$collection_id','$doc_file','$upload_date','$upload_by')";
                     $this->db->query($query);
                 } else {
                     //delete data if not upload
@@ -194,6 +195,9 @@ class Collection extends MY_Controller
 
     public function edit($subcategory_id, $id)
     {
+        $ci = &get_instance();
+        $user_id = $ci->session->userdata('id');
+
         $data['category_list'] = $this->category_m->category_list();
 
         $input = [
@@ -237,7 +241,7 @@ class Collection extends MY_Controller
                 // Set preference
                 $config['upload_path'] = './uploads/' . $doc['department_code'] . '/' . $doc['slug'] . '/' . $doc['subcategory_id'];
                 $config['allowed_types'] = 'pdf|doc|docx|xls|xlsx|jpg|jpeg|png|rar|zip';
-                $config['max_size'] = '35000'; // max_size in kb
+                $config['max_size'] = 35000; // max_size in kb
 
                 //Load upload library
                 $this->load->library('upload', $config);
@@ -271,9 +275,10 @@ class Collection extends MY_Controller
                     $uploadData = $this->upload->data();
                     $doc_file = $uploadData['file_name'];
                     $upload_date = $_POST['upload_date'];
+                    $upload_by = $user_id;
                     $data['filenames'][] = $doc_file;
 
-                    $query = "INSERT INTO attachments (collection_id, collection_file, upload_date) VALUES ('$collection_id','$doc_file','$upload_date')";
+                    $query = "INSERT INTO attachments (collection_id, collection_file, upload_date, upload_by) VALUES ('$collection_id','$doc_file','$upload_date','$upload_by')";
                     $this->db->query($query);
                 } else {
                     //delete data if not upload
