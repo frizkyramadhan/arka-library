@@ -96,7 +96,8 @@
               </div>
               <div class="col-6">
                 <div class="text-right">
-                  <a href="<?php echo base_url('dashboard') ?>" class="mb-3 btn bg-warning"><i class="fas fa-undo-alt"></i></i> Back</a>
+                  <a href="<?php echo base_url('dashboard/export/' . $user->id); ?>" class="mb-3 btn bg-success" onclick="return confirm('Do you want to export this data?')"><i class="fas fa-file-excel"></i> Export</a>
+                  <a href="<?php echo base_url('dashboard') ?>" class="mb-3 btn bg-warning"><i class="fas fa-undo-alt"></i> Back</a>
                 </div>
               </div>
             </div>
@@ -120,9 +121,9 @@
                         <div align="center">No Data Available</div>
                       </td>
                     <?php else : ?>
-                      <?php $i = 1; ?>
+                      <?php $no = $this->uri->segment(4) ? $this->uri->segment(4) + 1 : 1; ?>
                       <?php foreach ($attachment_list->result() as $key => $row) : ?>
-                        <td class="align-middle text-right"><?= $i++; ?></td>
+                        <td class="align-middle text-right"><?= $no++; ?></td>
                         <td class="align-middle"><a href="<?= base_url('uploads/' . $row->department_code . '/' . $row->slug . '/' . $row->subcategory_id . '/' . $row->collection_file) ?>"><?= $row->collection_file; ?></a></td>
                         <td class="align-middle"><?= $row->category_name; ?>/<?= $row->subcategory_name; ?>/<?= $row->collection_name; ?></td>
                         <td class="align-middle"><?= date('d-m-Y', strtotime($row->upload_date)); ?></td>

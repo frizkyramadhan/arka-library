@@ -1,5 +1,9 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
+
+// require 'vendor/autoload.php';
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class Dashboard extends CI_Controller
 {
@@ -127,15 +131,7 @@ class Dashboard extends CI_Controller
 			$this->session->unset_userdata('archive');
 		}
 		if (isset($_POST['filter'])) {
-			// $post = $this->input->post(null, TRUE);
-			$date1 = $this->input->post('date1');
-			$date2 = $this->input->post('date2');
-			$post = [
-				'date1' => $date1,
-				'date2' => $date2,
-				'collection_file' => $this->input->post('collection_file'),
-				'collection_name' => $this->input->post('collection_name'),
-			];
+			$post = $this->input->post(null, TRUE);
 			$this->session->set_userdata('archive', $post);
 		} else {
 			$post = $this->session->userdata('archive');
@@ -168,5 +164,35 @@ class Dashboard extends CI_Controller
 		$this->load->view('layout/sidebar', $data);
 		$this->load->view('dashboard/user', $data);
 		$this->load->view('layout/footer');
+	}
+
+	public function export($id)
+	{
+		$export = $this->collection_m->getAttachmentByUser($id)->result_array();
+
+		$spreadsheet = new Spreadsheet();
+		$sheet = $spreadsheet->getActiveSheet();
+		$sheet->setCellValue('A1', 'No');
+		$sheet->setCellValue('B1', 'Collection File');
+		$sheet->setCellValue('C1', 'Collection Name');
+		$sheet->setCellValue('D1', 'Upload Date');
+
+		$no = 1;
+		$x = 2;
+		foreach ($export as $row) {
+			// print_r($row);
+			$sheet->setCellValue('A' . $x, $no++);
+			$sheet->setCellValue('B' . $x, $row['collection_file']);
+			$sheet->setCellValue('C' . $x, $row['category_name'] . '/' . $row['subcategory_name'] . '/' . $row['collection_name']);
+			$sheet->setCellValue('D' . $x, $row['upload_date']);
+			$x++;
+		}
+
+		$writer = new Xlsx($spreadsheet);
+		$filename = 'User Summary - ARKA Library.xlsx';
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="' . $filename . '"');
+		header('Cache-Control: max-age=0');
+		$writer->save('php://output');
 	}
 }
